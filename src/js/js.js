@@ -1,7 +1,7 @@
 const App = {
   init() {
     console.log('Start');
-    console.log(App);
+    this.controllers.createLayout();
     console.log('End');
   },
 };
