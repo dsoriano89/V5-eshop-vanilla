@@ -104,8 +104,8 @@ App.controllers = {
     els.root.style.flexDirection = 'column';
 
     this.createHeader();
-    this.createMain();
-    //this.createCheckout();
+    //this.createMain();
+    this.createCheckout();
     els.root.appendChild(els.main.container);
     els.main.container.style.flexGrow = '1';
     this.createFooter();
