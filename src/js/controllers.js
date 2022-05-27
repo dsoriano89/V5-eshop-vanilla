@@ -1,4 +1,5 @@
 App.controllers = {
+
   createHeader() {
     const els = App.elements;
     const { header } = els;
@@ -26,15 +27,15 @@ App.controllers = {
       console.log('click!', e);
     };
   },
+
   createMain() {
     const els = App.elements;
-    const { main } = els;
-    els.root.appendChild(main.container);
-
-    main.container.style.flexGrow = '1';
+    const { main } = els.main;
+    els.main.container.appendChild(main.container);
 
     main.container.appendChild(main.bg);
     main.bg.src = './assets/bg.png';
+    main.bg.style.width = '100%';
 
     main.container.appendChild(main.h1);
     main.h1.innerText = 'Our products';
@@ -53,6 +54,35 @@ App.controllers = {
     main.p.style.lineHeight = '29.05px';
     main.p.style.textAlign = 'center';
   },
+
+  createCheckout() {
+    const els = App.elements;
+    const {
+      container, title, items, confirmBtnContainer, confirmBtn,
+    } = els.main.checkout;
+
+    els.main.container.appendChild(container);
+
+    container.style.backgroundColor = '#CCC';
+    container.style.height = '100%';
+    container.style.paddingTop = '230px';
+
+    container.appendChild(title);
+    title.innerHTML = 'My cart [ Total Amount :xx ]';
+    title.style.fontSize = '24px';
+    title.style.fontWeight = '700';
+    title.style.fontStyle = 'normal';
+    title.style.lineHeight = '29px';
+    title.style.textAlign = 'center';
+    title.style.color = '#000';
+
+    container.appendChild(confirmBtnContainer);
+    confirmBtnContainer.appendChild(confirmBtn);
+    confirmBtn.classList.add('btn');
+    confirmBtn.innerHTML = 'Confirm purchase';
+    confirmBtnContainer.style.textAlign = 'center';
+  },
+
   createFooter() {
     const els = App.elements;
     const { footer } = els;
@@ -65,14 +95,20 @@ App.controllers = {
     footer.container.style.alignItems = 'center';
     footer.container.style.padding = '50px';
   },
+
   createLayout() {
     const els = App.elements;
+
     els.root.style.height = '100vh';
     els.root.style.display = 'flex';
     els.root.style.flexDirection = 'column';
 
     this.createHeader();
-    this.createMain();
+    //this.createMain();
+    this.createCheckout();
+    els.root.appendChild(els.main.container);
+    els.main.container.style.flexGrow = '1';
     this.createFooter();
   },
+
 };
