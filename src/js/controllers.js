@@ -1,5 +1,27 @@
 App.controllers = {
 
+  getPage() {
+    const stringParams = window.location.search;
+    const searchParams = new URLSearchParams(stringParams);
+    const page = searchParams.get('p');
+    return page;
+},
+  router() {
+    setInterval(() => {
+      const page = this.getPage();
+      if (page === 'cart') {
+        this.createCheckout();
+      } else if (!page) {
+        this.createMain();
+      } else {
+        console.log('ERROR');
+      }
+    }, 100);
+  },
+  go(p) {
+    history.pushState({ p }, '', App.state.routes[p]);
+  },
+
   createHeader() {
     const els = App.elements;
     const { header } = els;
@@ -15,6 +37,10 @@ App.controllers = {
     header.container.appendChild(header.logo);
     header.logo.src = './assets/logo.png';
     header.logo.style.margin = '35px 0 35px 48px';
+    header.logo.style.cursor = 'pointer';
+    header.logo.onclick = (e) => {
+      App.controllers.go('home');
+    };
 
     header.container.appendChild(header.cartIcon);
     header.cartIcon.src = './assets/cart.png';
@@ -24,13 +50,14 @@ App.controllers = {
     header.cartIcon.style.marginRight = '53px';
     header.cartIcon.style.cursor = 'pointer';
     header.cartIcon.onclick = (e) => {
-      console.log('click!', e);
+      App.controllers.go('cart');
     };
   },
 
   createMain() {
     const els = App.elements;
     const { main } = els.main;
+    els.main.container.innerHTML = '';
     els.main.container.appendChild(main.container);
 
     main.container.appendChild(main.bg);
@@ -60,7 +87,7 @@ App.controllers = {
     const {
       container, title, items, confirmBtnContainer, confirmBtn,
     } = els.main.checkout;
-
+    els.main.container.innerHTML = '';
     els.main.container.appendChild(container);
 
     container.style.backgroundColor = '#CCC';
@@ -104,8 +131,8 @@ App.controllers = {
     els.root.style.flexDirection = 'column';
 
     this.createHeader();
-    //this.createMain();
-    this.createCheckout();
+    // this.createMain();
+    // this.createCheckout();
     els.root.appendChild(els.main.container);
     els.main.container.style.flexGrow = '1';
     this.createFooter();
