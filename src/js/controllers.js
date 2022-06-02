@@ -137,12 +137,13 @@ App.controllers = {
     els.main.container.style.flexGrow = '1';
     this.createFooter();
   },
-  createBtn(content) {
+  createBtn(content, type = 'primary', onclick) {
     const el = document.createElement('button');
     el.innerHTML = content;
     el.style.display = 'flex';
+    el.style.border = 'none';
     el.style.height = '32px';
-    el.style.width = '84px';
+    // el.style.width = '84px';
     el.style.left = '111px';
     el.style.top = '85px';
     el.style.borderRadius = '20px';
@@ -151,12 +152,82 @@ App.controllers = {
     el.style.justifyContent = 'center';
     el.style.alignItems = 'center';
     el.style.padding = '5px 16px';
-    el.style.background = '#000000';
-    el.style.boxShadow = '0px 2px 0px rgba(0, 0, 0, 0.043)';
     el.style.flex = 'none';
     el.style.order = '3';
     el.style.flexGrow = '0';
     el.style.color = '#FFF';
+
+    if (type === 'primary') {
+      el.style.background = '#000000';
+      el.style.boxShadow = '0px 2px 0px rgba(0, 0, 0, 0.043)';
+    }
+
+    if (type === 'secondary') {
+      el.style.background = 'rgba(0, 0, 0, 0.6)';
+      el.style.boxShadow = '0px 4px 4px rgba(0, 0, 0, 0.25)';
+    }
+
+    if (type === 'default') {
+      el.style.background = '#FFF';
+      el.style.border = '2px solid #000';
+      el.style.boxShadow = '0px 2px 0px rgba(0, 0, 0, 0.043)';
+      el.style.color = '#000';
+    }
+
+    if (type === 'other') {
+      el.style.boxShadow = '0px 4px 4px rgba(0, 0, 0, 0.025)';
+      el.style.background = 'rgba(0, 0, 0, 0.2)';
+      el.style.color = '#000';
+    }
+    el.onclick = onclick;
+    return el;
+  },
+  createCard() {
+    const el = document.createElement('div');
+
+    el.style.border = '1px solid black';
+    el.style.display = 'flex';
+    el.style.flexDirection = 'column';
+    el.style.alignItems = 'center';
+
+    const img = document.createElement('img');
+    el.appendChild(img);
+    img.src = './assets/bg.png';
+    img.style.maxWidth = '300px';
+    img.style.maxHeight = '300px';
+    img.style.borderRadius = '50%';
+
+    const title = document.createElement('div');
+    el.appendChild(title);
+    title.innerHTML = 'croissant';
+    title.style.fontWeight = '700';
+    title.style.fontSize = '16px';
+    title.style.lineHeight = '19px';
+    title.style.color = '#000';
+    title.style.marginTop = '40px';
+
+    const price = document.createElement('div');
+    el.appendChild(price);
+    price.innerHTML = 'USD 1,99';
+    price.style.fontWeight = '400';
+    price.style.fontSize = '16px';
+    price.style.marginTop = '4px';
+    price.style.lineHeight = '19px';
+
+    const desc = document.createElement('div');
+    el.appendChild(desc);
+    desc.innerHTML = 'Description';
+    desc.style.fontWeight = '400';
+    desc.style.fontSize = '16px';
+    desc.style.lineHeight = '19px';
+    desc.style.marginTop = '4px';
+
+    const btn = this.createBtn('Add to cart', 'primary', () => {
+      console.log('click');
+    });
+    btn.style.marginTop = '4px';
+    el.appendChild(btn);
+
     return el;
   },
 
