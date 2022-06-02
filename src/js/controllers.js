@@ -5,7 +5,7 @@ App.controllers = {
     const searchParams = new URLSearchParams(stringParams);
     const page = searchParams.get('p');
     return page;
-},
+  },
   router() {
     setInterval(() => {
       const page = this.getPage();
@@ -136,6 +136,28 @@ App.controllers = {
     els.root.appendChild(els.main.container);
     els.main.container.style.flexGrow = '1';
     this.createFooter();
+  },
+  createBtn(content) {
+    const el = document.createElement('button');
+    el.innerHTML = content;
+    el.style.display = 'flex';
+    el.style.height = '32px';
+    el.style.width = '84px';
+    el.style.left = '111px';
+    el.style.top = '85px';
+    el.style.borderRadius = '20px';
+    el.style.padding = '5px, 16px, 5px, 16px';
+    el.style.flexDirection = 'column';
+    el.style.justifyContent = 'center';
+    el.style.alignItems = 'center';
+    el.style.padding = '5px 16px';
+    el.style.background = '#000000';
+    el.style.boxShadow = '0px 2px 0px rgba(0, 0, 0, 0.043)';
+    el.style.flex = 'none';
+    el.style.order = '3';
+    el.style.flexGrow = '0';
+    el.style.color = '#FFF';
+    return el;
   },
 
 };
