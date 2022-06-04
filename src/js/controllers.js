@@ -5,7 +5,7 @@ App.controllers = {
     const searchParams = new URLSearchParams(stringParams);
     const page = searchParams.get('p');
     return page;
-},
+  },
   router() {
     setInterval(() => {
       const page = this.getPage();
@@ -137,5 +137,174 @@ App.controllers = {
     els.main.container.style.flexGrow = '1';
     this.createFooter();
   },
+  createBtn(content, type = 'primary', onclick) {
+    const el = document.createElement('button');
+    el.innerHTML = content;
+    el.style.display = 'flex';
+    el.style.border = 'none';
+    el.style.height = '32px';
+    // el.style.width = '84px';
+    el.style.left = '111px';
+    el.style.top = '85px';
+    el.style.borderRadius = '20px';
+    el.style.padding = '5px, 16px, 5px, 16px';
+    el.style.flexDirection = 'column';
+    el.style.justifyContent = 'center';
+    el.style.alignItems = 'center';
+    el.style.padding = '5px 16px';
+    el.style.flex = 'none';
+    el.style.order = '3';
+    el.style.flexGrow = '0';
+    el.style.color = '#FFF';
 
+    if (type === 'primary') {
+      el.style.background = '#000000';
+      el.style.boxShadow = '0px 2px 0px rgba(0, 0, 0, 0.043)';
+    }
+
+    if (type === 'secondary') {
+      el.style.background = 'rgba(0, 0, 0, 0.6)';
+      el.style.boxShadow = '0px 4px 4px rgba(0, 0, 0, 0.25)';
+    }
+
+    if (type === 'default') {
+      el.style.background = '#FFF';
+      el.style.border = '2px solid #000';
+      el.style.boxShadow = '0px 2px 0px rgba(0, 0, 0, 0.043)';
+      el.style.color = '#000';
+    }
+
+    if (type === 'other') {
+      el.style.boxShadow = '0px 4px 4px rgba(0, 0, 0, 0.025)';
+      el.style.background = 'rgba(0, 0, 0, 0.2)';
+      el.style.color = '#000';
+    }
+    el.onclick = onclick;
+    return el;
+  },
+  createCard() {
+    const el = document.createElement('div');
+
+    el.style.border = '1px solid black';
+    el.style.display = 'flex';
+    el.style.flexDirection = 'column';
+    el.style.alignItems = 'center';
+
+    const img = document.createElement('img');
+    el.appendChild(img);
+    img.src = './assets/bg.png';
+    img.style.maxWidth = '300px';
+    img.style.maxHeight = '300px';
+    img.style.borderRadius = '50%';
+
+    const title = document.createElement('div');
+    el.appendChild(title);
+    title.innerHTML = 'croissant';
+    title.style.fontWeight = '700';
+    title.style.fontSize = '16px';
+    title.style.lineHeight = '19px';
+    title.style.color = '#000';
+    title.style.marginTop = '40px';
+
+    const price = document.createElement('div');
+    el.appendChild(price);
+    price.innerHTML = 'USD 1,99';
+    price.style.fontWeight = '400';
+    price.style.fontSize = '16px';
+    price.style.marginTop = '4px';
+    price.style.lineHeight = '19px';
+
+    const desc = document.createElement('div');
+    el.appendChild(desc);
+    desc.innerHTML = 'Description';
+    desc.style.fontWeight = '400';
+    desc.style.fontSize = '16px';
+    desc.style.lineHeight = '19px';
+    desc.style.marginTop = '4px';
+
+    const btn = this.createBtn('Add to cart', 'primary', () => {
+      console.log('click');
+    });
+    btn.style.marginTop = '4px';
+    el.appendChild(btn);
+
+    return el;
+  },
+  createModal(children) {
+    const el = document.createElement('div');
+    const modal = document.createElement('div');
+
+    const closeModal = () => {
+      this.closeModal(el);
+    };
+
+    el.style.display = 'flex';
+    // el.style.flexDirection = 'column';
+    el.style.justifyContent = 'center';
+    el.style.alignItems = 'center';
+    el.style.position = 'fixed';
+    el.style.top = '0';
+    el.style.left = '0';
+    el.style.height = '100%';
+    el.style.width = '100%';
+    el.style.background = 'rgba(0, 0, 0, 0.5)';
+    el.classList.add('backdrop');
+    el.onclick = (e) => {
+      if (e.target.classList.contains('backdrop')) {
+        closeModal();
+      }
+    };
+
+    modal.style.display = 'flex';
+    modal.style.background = '#FFF';
+    modal.style.borderRadius = '4px';
+    modal.style.width = 'fit-content';
+    modal.style.flexDirection = 'column';
+    modal.style.display = 'flex';
+    el.appendChild(modal);
+
+    const close = document.createElement('div');
+    close.style.display = 'flex';
+    close.style.justifyContent = 'center';
+    close.style.alignItems = 'center';
+    close.style.padding = '10px';
+    close.style.width = 'fit-content';
+    close.innerHTML = 'X';
+    close.style.alignSelf = 'flex-end';
+    close.style.background = 'rgba(0, 0, 0, 0.6)';
+    close.style.color = 'white';
+    close.style.borderRadius = '4px';
+    close.style.cursor = 'pointer';
+    close.style.marginTop = '11px';
+    close.style.marginRight = '12px';
+    close.onclick = closeModal;
+    modal.appendChild(close);
+
+    const body = document.createElement('div');
+    body.innerHTML = children;
+    modal.appendChild(body);
+
+    const footer = document.createElement('div');
+    footer.style.display = 'flex';
+    footer.style.justifyContent = 'space-between';
+    footer.style.margin = '45px 82px 71px 81px';
+    modal.appendChild(footer);
+
+    const cancel = this.createBtn('Cancel', 'other', closeModal);
+    cancel.style.cursor = 'pointer';
+    footer.appendChild(cancel);
+
+    const ok = this.createBtn('Confirm', 'secondary');
+    ok.style.cursor = 'pointer';
+    ok.style.marginLeft = '24px';
+    footer.appendChild(ok);
+
+    return el;
+  },
+  openModal(el) {
+    el.style.display = 'flex';
+  },
+  closeModal(el) {
+    el.style.display = 'none';
+  },
 };
