@@ -182,49 +182,44 @@ App.controllers = {
     el.onclick = onclick;
     return el;
   },
-  createCard() {
+  createCard(title, price, description, imgs, onclick) {
     const el = document.createElement('div');
 
-    el.style.border = '1px solid black';
+    el.style.width = 'fit-content';
     el.style.display = 'flex';
     el.style.flexDirection = 'column';
     el.style.alignItems = 'center';
+    el.style.padding = '1rem';
+    // el.style.border = '1px solid black';
 
-    const img = document.createElement('img');
-    el.appendChild(img);
-    img.src = './assets/bg.png';
-    img.style.maxWidth = '300px';
-    img.style.maxHeight = '300px';
-    img.style.borderRadius = '50%';
+    const carousel = new Carousel({ imgs, container: imageContainer });
 
-    const title = document.createElement('div');
-    el.appendChild(title);
-    title.innerHTML = 'croissant';
-    title.style.fontWeight = '700';
-    title.style.fontSize = '16px';
-    title.style.lineHeight = '19px';
-    title.style.color = '#000';
-    title.style.marginTop = '40px';
+    const titleEl = document.createElement('div');
+    el.appendChild(titleEl);
+    titleEl.innerHTML = title;
+    titleEl.style.fontWeight = '700';
+    titleEl.style.fontSize = '16px';
+    titleEl.style.lineHeight = '19px';
+    titleEl.style.color = '#000';
+    titleEl.style.marginTop = '40px';
 
-    const price = document.createElement('div');
-    el.appendChild(price);
-    price.innerHTML = 'USD 1,99';
-    price.style.fontWeight = '400';
-    price.style.fontSize = '16px';
-    price.style.marginTop = '4px';
-    price.style.lineHeight = '19px';
+    const priceEl = document.createElement('div');
+    el.appendChild(priceEl);
+    priceEl.innerHTML = price;
+    priceEl.style.fontWeight = '400';
+    priceEl.style.fontSize = '16px';
+    priceEl.style.marginTop = '4px';
+    priceEl.style.lineHeight = '19px';
 
     const desc = document.createElement('div');
     el.appendChild(desc);
-    desc.innerHTML = 'Description';
+    desc.innerHTML = description;
     desc.style.fontWeight = '400';
     desc.style.fontSize = '16px';
     desc.style.lineHeight = '19px';
     desc.style.marginTop = '4px';
 
-    const btn = this.createBtn('Add to cart', 'primary', () => {
-      console.log('click');
-    });
+    const btn = this.createBtn('Add to cart', 'primary', onclick);
     btn.style.marginTop = '4px';
     el.appendChild(btn);
 
@@ -306,5 +301,14 @@ App.controllers = {
   },
   closeModal(el) {
     el.style.display = 'none';
+  },
+  currencyFormat(value) {
+    if (typeof value === 'string') {
+      value = parseFloat(value);
+    }
+    return new Intl.NumberFormat('ja-JP', {
+      style: 'currency',
+      currency: 'JPY',
+    }).format(value);
   },
 };
