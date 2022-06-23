@@ -190,9 +190,11 @@ App.controllers = {
     el.style.flexDirection = 'column';
     el.style.alignItems = 'center';
     el.style.padding = '1rem';
-    // el.style.border = '1px solid black';
 
-    const carousel = new Carousel({ imgs, container: imageContainer });
+    const imgContainer = document.createElement('div');
+
+    const carousel = new Carousel({ imgs, container: imgContainer });
+    el.appendChild(imgContainer);
 
     const titleEl = document.createElement('div');
     el.appendChild(titleEl);
@@ -210,6 +212,7 @@ App.controllers = {
     priceEl.style.fontSize = '16px';
     priceEl.style.marginTop = '4px';
     priceEl.style.lineHeight = '19px';
+    priceEl.style.innerHTML = this.currencyFormat(price);
 
     const desc = document.createElement('div');
     el.appendChild(desc);
@@ -234,7 +237,6 @@ App.controllers = {
     };
 
     el.style.display = 'flex';
-    // el.style.flexDirection = 'column';
     el.style.justifyContent = 'center';
     el.style.alignItems = 'center';
     el.style.position = 'fixed';

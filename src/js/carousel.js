@@ -1,9 +1,7 @@
 class Carousel {
     config = {}
 
-    imageElements = []
-
-    index = 0
+    imageEls = []
 
     container = null
 
@@ -12,6 +10,8 @@ class Carousel {
     imageContainer = null
 
     rightContainer = null
+
+    index = 0
 
     /**
      * Configure the carousel
@@ -32,15 +32,8 @@ class Carousel {
 
     renderImage() {
       console.log(this.index);
-      this.imageContainer.appendChild(this.imageElements[this.index]);
       this.imageContainer.innerHTML = '';
-    }
-
-    setContainerStyle() {
-      this.container.style.display = 'flex';
-      this.container.style.alignItems = 'center';
-      this.container.style.width = 'fit-content';
-      this.container.style.height = '300px';
+      this.imageContainer.appendChild(this.imageEls[this.index]);
     }
 
     createElements() {
@@ -48,22 +41,20 @@ class Carousel {
       this.imageContainer = document.createElement('div');
       this.rightContainer = document.createElement('div');
 
-      const caret = document.createElement('img');
-      caret.src = './assets/caret.svg';
-      caret.style.transform = 'rotate(90deg)';
-      caret.style.width = '32px';
+      const caretL = document.createElement('img');
+      caretL.src = './assets/caret.svg';
+      caretL.style.transform = 'rotate(90deg)';
+      caretL.style.width = '32px';
 
       this.leftContainer.style.cursor = 'pointer';
       this.leftContainer.onclick = () => {
         console.log('[left]');
         this.index--;
         if (this.index < 0) {
-          this.index = this.imageElements.length - 1;
+          this.index = this.imageEls.length - 1;
         }
         this.renderImage();
       };
-
-      this.imageContainer.style.margin = '3px';
 
       const caretR = document.createElement('img');
       caretR.src = './assets/caret.svg';
@@ -74,31 +65,41 @@ class Carousel {
       this.rightContainer.onclick = () => {
         console.log('[right]');
         this.index++;
-        if (this.index < this.imageElements.length - 1) {
+        if (this.index > this.imageEls.length - 1) {
           this.index = 0;
         }
         this.renderImage();
       };
 
+      this.imageContainer.style.margin = '3px';
+
+      this.leftContainer.appendChild(caretL);
+
+      this.rightContainer.appendChild(caretR);
+
       this.container.appendChild(this.leftContainer);
-      this.leftContainer.appendChild(caret);
 
       this.container.appendChild(this.imageContainer);
 
       this.container.appendChild(this.rightContainer);
-      this.rightContainer.appendChild(caretR);
+    }
+
+    setContainerStyle() {
+      this.container.style.display = 'flex';
+      this.container.style.alignItems = 'center';
+      this.container.style.width = 'fit-content';
+      this.container.style.height = '300px';
     }
 
     preLoadImages() {
       this.config.imgs.forEach((img, i) => {
         const el = document.createElement('img');
-
         el.src = this.config.imgs[i];
         el.style.maxWidth = '300px';
         el.style.maxHeight = '300px';
         el.style.borderRadius = '50%';
 
-        this.imageElements.push(el);
+        this.imageEls.push(el);
       });
     }
 }
