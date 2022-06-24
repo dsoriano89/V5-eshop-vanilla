@@ -8,6 +8,9 @@ App.controllers = {
   },
   router() {
     setInterval(() => {
+      if (App.state.routeRendered) {
+        return;
+      }
       const page = this.getPage();
       if (page === 'cart') {
         this.createCheckout();
@@ -16,10 +19,26 @@ App.controllers = {
       } else {
         console.log('ERROR');
       }
-    }, 100);
+      App.state.routeRendered = true;
+    }, 1000);
   },
   go(p) {
+    App.state.routeRendered = false;
     history.pushState({ p }, '', App.state.routes[p]);
+  },
+  createProductsElements(container) {
+    App.state.products.forEach((product) => {
+      const card = this.createCard(
+        product.name,
+        product.desc,
+        product.price,
+        product.images,
+        () => {
+          console.log(product);
+        },
+      );
+      container.appendChild(card);
+    });
   },
 
   createHeader() {
@@ -57,6 +76,7 @@ App.controllers = {
   createMain() {
     const els = App.elements;
     const { main } = els.main;
+
     els.main.container.innerHTML = '';
     els.main.container.appendChild(main.container);
 
@@ -74,12 +94,17 @@ App.controllers = {
     main.h1.style.textAlign = 'center';
 
     main.container.appendChild(main.p);
-    main.p.innerText = 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy tincidunt ut laoreet dolore magna aliquam erat volutpat';
+    main.p.innerText = "Our breads recipes uses selected ingredients of the highest quality and they're always fresh for you.";
     main.p.style.fontSize = '24px';
     main.p.style.fontStyle = 'normal';
     main.p.style.fontWeight = '400';
     main.p.style.lineHeight = '29.05px';
     main.p.style.textAlign = 'center';
+
+    main.container.appendChild(main.itemsContainer);
+    main.itemsContainer.style.display = 'flex';
+    main.itemsContainer.style.flexWrap = 'wrap';
+    this.createProductsElements(main.itemsContainer);
   },
 
   createCheckout() {

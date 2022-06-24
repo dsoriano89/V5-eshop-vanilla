@@ -20,7 +20,7 @@ class Carousel {
      * @param {Array} config.imgs list of images to be displayed
      */
     constructor(config) {
-      console.log('carousel start', this);
+      console.log('carousel start');
       this.config = config;
       this.container = config.container;
       this.setContainerStyle();
