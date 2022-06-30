@@ -29,10 +29,21 @@ App.state = {
       images: ['https://ancestralpadaria.com.br/wp-content/uploads/2018/03/Cinnamon-roll-4.jpg'],
     },
   ],
+  cart: [],
   routes: {
     home: `${window.location.origin}${window.location.pathname}`,
     cart: '?p=cart',
   },
   // modalOpen: false,
   routeRendered: false,
+  mutation: {
+    addToCart() {
+      if (App.state.cart.find((p) => p.id === products.id)) {
+        return false;
+      }
+      App.state.cart.push(this.product);
+      return true;
+    },
+  },
+  getters: {},
 };

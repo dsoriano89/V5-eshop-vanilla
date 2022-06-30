@@ -35,6 +35,11 @@ App.controllers = {
         product.images,
         () => {
           console.log(product);
+          const res = confirm('Do you want to add this product to your cart?');
+          console.log(res);
+          if (res && App.state.mutation.addToCart(product)) {
+            App.elements.header.cartCount.innerText = App.state.cart.length;
+          }
         },
       );
       container.appendChild(card);
@@ -66,11 +71,22 @@ App.controllers = {
     header.cartIcon.style.width = '36px';
     header.cartIcon.style.height = '36px';
     header.container.style.alignItems = 'center';
-    header.cartIcon.style.marginRight = '53px';
     header.cartIcon.style.cursor = 'pointer';
     header.cartIcon.onclick = (e) => {
       App.controllers.go('cart');
     };
+    header.cartCount.innerText = App.state.cart.length;
+    // header.cartCount.style.border = '1px solid orange';
+    header.cartCount.style.color = '#FFF';
+    header.cartCount.style.marginRight = '53px';
+
+    // header.cartContainer.style.border = '1px solid orange';
+    // header.cartContainer.style.width = '100px';
+    header.cartContainer.style.display = 'flex';
+
+    header.cartContainer.appendChild(header.cartIcon);
+    header.cartContainer.appendChild(header.cartCount);
+    header.container.appendChild(header.cartContainer);
   },
 
   createMain() {
