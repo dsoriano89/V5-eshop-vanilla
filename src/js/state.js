@@ -37,11 +37,11 @@ App.state = {
   // modalOpen: false,
   routeRendered: false,
   mutation: {
-    addToCart() {
-      if (App.state.cart.find((p) => p.id === products.id)) {
+    addToCart(product) {
+      if (App.state.cart.find((p) => p.id === product.id)) {
         return false;
       }
-      App.state.cart.push(this.product);
+      App.state.cart.push(product);
       return true;
     },
   },
