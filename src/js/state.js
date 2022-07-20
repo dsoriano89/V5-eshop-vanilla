@@ -4,7 +4,7 @@ App.state = {
       id: 1,
       name: 'Croissant',
       desc: 'Butter croissant',
-      price:8.50,
+      price: 8.50,
       images: ['https://www.selecoes.com.br/wp-content/uploads/2022/05/mini-croissant-id921299628.jpg'],
     },
     {
@@ -29,10 +29,25 @@ App.state = {
       images: ['https://ancestralpadaria.com.br/wp-content/uploads/2018/03/Cinnamon-roll-4.jpg'],
     },
   ],
+  cart: [],
   routes: {
     home: `${window.location.origin}${window.location.pathname}`,
     cart: '?p=cart',
   },
   // modalOpen: false,
   routeRendered: false,
+  mutation: {
+    addToCart(product) {
+      if (App.state.cart.find((p) => p.id === product.id)) {
+        return false;
+      }
+      App.state.cart.push(product);
+      return true;
+    },
+    removeFromCart(product) {
+      console.log(App.state.cart, product);
+      App.state.cart = App.state.cart.filter((p) => p.id !== product.id);
+    },
+  },
+  getters: {},
 };

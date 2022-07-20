@@ -20,11 +20,20 @@ App.controllers = {
         console.log('ERROR');
       }
       App.state.routeRendered = true;
-    }, 1000);
+    }, 100);
   },
   go(p) {
     App.state.routeRendered = false;
     history.pushState({ p }, '', App.state.routes[p]);
+  },
+  confirmPurchase() {
+    console.log('lests confirm', App.state.cart);
+    const res  = confirm('Are you sure?');
+    if (res) { 
+      App.state.cart = [];
+      App.elements.header.cartCount.innerText = App.state.cart.length;
+      this.go('home');
+      alert('Thank you for your purchase!'); }
   },
   createProductsElements(container) {
     App.state.products.forEach((product) => {
@@ -33,8 +42,36 @@ App.controllers = {
         product.desc,
         product.price,
         product.images,
+        'Add to cart',
         () => {
           console.log(product);
+          const res = confirm('Do you want to add this product to your cart?');
+          console.log(res);
+          if (res && App.state.mutation.addToCart(product)) {
+            App.elements.header.cartCount.innerText = App.state.cart.length;
+          }
+        },
+      );
+      container.appendChild(card);
+    });
+  },
+  createCartElements(container) {
+    App.state.cart.forEach((product) => {
+      const card = this.createCard(
+        product.name,
+        product.desc,
+        product.price,
+        product.images,
+        'Remove item',
+        () => {
+          console.log(product);
+          const res = confirm('Do you want to remove this product of your cart?');
+
+          if (res) {
+            App.state.mutation.removeFromCart(product);
+            App.elements.header.cartCount.innerText = App.state.cart.length;
+            App.controllers.createCheckout();
+          }
         },
       );
       container.appendChild(card);
@@ -66,11 +103,22 @@ App.controllers = {
     header.cartIcon.style.width = '36px';
     header.cartIcon.style.height = '36px';
     header.container.style.alignItems = 'center';
-    header.cartIcon.style.marginRight = '53px';
     header.cartIcon.style.cursor = 'pointer';
     header.cartIcon.onclick = (e) => {
       App.controllers.go('cart');
     };
+    header.cartCount.innerText = App.state.cart.length;
+    // header.cartCount.style.border = '1px solid orange';
+    header.cartCount.style.color = '#FFF';
+    header.cartCount.style.marginRight = '53px';
+
+    // header.cartContainer.style.border = '1px solid orange';
+    // header.cartContainer.style.width = '100px';
+    header.cartContainer.style.display = 'flex';
+
+    header.cartContainer.appendChild(header.cartIcon);
+    header.cartContainer.appendChild(header.cartCount);
+    header.container.appendChild(header.cartContainer);
   },
 
   createMain() {
@@ -110,7 +158,7 @@ App.controllers = {
   createCheckout() {
     const els = App.elements;
     const {
-      container, title, items, confirmBtnContainer, confirmBtn,
+      container, title, items, confirmBtnContainer, confirmBtn, itemsContainer,
     } = els.main.checkout;
     els.main.container.innerHTML = '';
     els.main.container.appendChild(container);
@@ -120,7 +168,17 @@ App.controllers = {
     container.style.paddingTop = '230px';
 
     container.appendChild(title);
-    title.innerHTML = 'My cart [ Total Amount :xx ]';
+
+    let total = 0;
+
+    for (let i = 0; i < App.state.cart.length; i++) {
+      const item = App.state.cart[i];
+      console.log(item.price);
+      total += item.price;
+    }
+    console.log('este é o total', total);
+
+    title.innerHTML = `My cart [ Total Amount: ${this.currencyFormat(total)}]`;
     title.style.fontSize = '24px';
     title.style.fontWeight = '700';
     title.style.fontStyle = 'normal';
@@ -128,9 +186,18 @@ App.controllers = {
     title.style.textAlign = 'center';
     title.style.color = '#000';
 
+    container.appendChild(itemsContainer);
+    itemsContainer.style.display = 'flex';
+    itemsContainer.style.flexWrap = 'wrap';
+    itemsContainer.innerHTML = '';
+    this.createCartElements(itemsContainer);
+
     container.appendChild(confirmBtnContainer);
     confirmBtnContainer.appendChild(confirmBtn);
     confirmBtn.classList.add('btn');
+    confirmBtn.onclick = () => {
+      this.confirmPurchase();
+    };
     confirmBtn.innerHTML = 'Confirm purchase';
     confirmBtnContainer.style.textAlign = 'center';
   },
@@ -207,7 +274,7 @@ App.controllers = {
     el.onclick = onclick;
     return el;
   },
-  createCard(title, price, description, imgs, onclick) {
+  createCard(title, price, description, imgs, btnLabel, onclick) {
     const el = document.createElement('div');
 
     el.style.width = 'fit-content';
@@ -247,7 +314,7 @@ App.controllers = {
     desc.style.lineHeight = '19px';
     desc.style.marginTop = '4px';
 
-    const btn = this.createBtn('Add to cart', 'primary', onclick);
+    const btn = this.createBtn(btnLabel, 'primary', onclick);
     btn.style.marginTop = '4px';
     el.appendChild(btn);
 
@@ -333,9 +400,9 @@ App.controllers = {
     if (typeof value === 'string') {
       value = parseFloat(value);
     }
-    return new Intl.NumberFormat('ja-JP', {
+    return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
-      currency: 'JPY',
+      currency: 'BRL',
     }).format(value);
   },
 };

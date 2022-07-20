@@ -5,7 +5,9 @@ App.elements = {
   header: {
     container: document.createElement('div'),
     logo: document.createElement('img'),
+    cartContainer: document.createElement('div'),
     cartIcon: document.createElement('img'),
+    cartCount: document.createElement('div'),
   },
 
   main: {
@@ -23,6 +25,7 @@ App.elements = {
       title: document.createElement('h1'),
       confirmBtnContainer: document.createElement('div'),
       confirmBtn: document.createElement('button'),
+      itemsContainer: document.createElement('div'),
     },
 
   },
