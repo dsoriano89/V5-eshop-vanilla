@@ -4,7 +4,7 @@ App.state = {
       id: 1,
       name: 'Croissant',
       desc: 'Butter croissant',
-      price:8.50,
+      price: 8.50,
       images: ['https://www.selecoes.com.br/wp-content/uploads/2022/05/mini-croissant-id921299628.jpg'],
     },
     {
@@ -43,6 +43,10 @@ App.state = {
       }
       App.state.cart.push(product);
       return true;
+    },
+    removeFromCart(product) {
+      console.log(App.state.cart, product);
+      App.state.cart = App.state.cart.filter((p) => p.id !== product.id);
     },
   },
   getters: {},
