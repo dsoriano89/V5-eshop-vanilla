@@ -46,6 +46,8 @@ App.controllers = {
         () => {
           console.log(product);
           const res = confirm('Do you want to add this product to your cart?');
+
+          this.dumpData();
           console.log(res);
           if (res && App.state.mutation.addToCart(product)) {
             App.elements.header.cartCount.innerText = App.state.cart.length;
@@ -69,6 +71,7 @@ App.controllers = {
 
           if (res) {
             App.state.mutation.removeFromCart(product);
+            this.dumpData();
             App.elements.header.cartCount.innerText = App.state.cart.length;
             App.controllers.createCheckout();
           }
@@ -404,5 +407,16 @@ App.controllers = {
       style: 'currency',
       currency: 'BRL',
     }).format(value);
+  },
+  dumpData() {
+    const data = JSON.stringify(App.state.keys.cart)
+    console.log(data)
+    localStorage.setItem(App.state.keys.cart, data)
+  },
+  loadData() {
+    const data = localStorage.getItem(App.state.keys.cart)
+    if (data) {
+      App.state.mutation.setCart(JSON.parse(data))
+    }
   },
 };
