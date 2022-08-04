@@ -1,6 +1,6 @@
 App.state = {
   keys: {
-    cat: 'V5-Ingate-cart',
+    cart: 'V5-Ingate-cart',
   },
   products: [
     {
