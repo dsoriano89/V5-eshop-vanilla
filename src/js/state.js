@@ -56,10 +56,6 @@ App.state = {
     removeFromCart(product) {
       console.log(App.state.cart, product);
       App.state.cart = App.state.cart.filter((p) => p.id !== product.id);
-    },
-    setCart(newCart) {
-      App.state.cart = newCart
-    }
   },
   getters: {},
 };
