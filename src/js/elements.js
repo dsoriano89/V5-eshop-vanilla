@@ -8,6 +8,8 @@ App.elements = {
     cartContainer: document.createElement('div'),
     cartIcon: document.createElement('img'),
     cartCount: document.createElement('div'),
+    boxIcons: document.createElement('div'),
+    avatar: document.createElement('img'),
   },
 
   main: {
@@ -27,7 +29,16 @@ App.elements = {
       confirmBtn: document.createElement('button'),
       itemsContainer: document.createElement('div'),
     },
-
+    login: {
+      container: document.createElement('div'),
+      infoBox: document.createElement('div'),
+      header: document.createElement('div'),
+      title: document.createElement('p'),
+      email: document.createElement('input'),
+      keyCode: document.createElement('input'),
+      saveBtn: document.createElement('button'),
+      titleBtn: document.createElement('p'),
+    },
   },
 
   footer: {

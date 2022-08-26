@@ -1,4 +1,12 @@
 App.state = {
+  keys: {
+    cart: 'cart',
+  },
+  userData: {
+    user: 'Bruno',
+    password: '12345',
+    cupon: '20,00',
+  },
   products: [
     {
       id: 1,
@@ -33,6 +41,7 @@ App.state = {
   routes: {
     home: `${window.location.origin}${window.location.pathname}`,
     cart: '?p=cart',
+    login: '?p=login',
   },
   // modalOpen: false,
   routeRendered: false,
@@ -48,6 +57,9 @@ App.state = {
       console.log(App.state.cart, product);
       App.state.cart = App.state.cart.filter((p) => p.id !== product.id);
     },
+    setCart(newCart) {
+      App.state.cart = newCart
+    }
   },
   getters: {},
 };
