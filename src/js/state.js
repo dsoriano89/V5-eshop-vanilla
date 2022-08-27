@@ -1,6 +1,11 @@
 App.state = {
   keys: {
-    cart: 'V5-Ingate-cart',
+    cart: 'cart',
+  },
+  userData: {
+    user: 'Bruno',
+    password: '12345',
+    cupon: '20,00',
   },
   products: [
     {
@@ -36,6 +41,7 @@ App.state = {
   routes: {
     home: `${window.location.origin}${window.location.pathname}`,
     cart: '?p=cart',
+    login: '?p=login',
   },
   // modalOpen: false,
   routeRendered: false,

@@ -9,3 +9,7 @@ body {
     border-radius: 20px;
     padding: 5px 16px;
     }
+.back {
+    background-image: url(./assets/back.jpeg);
+
+    }

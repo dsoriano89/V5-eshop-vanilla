@@ -14,10 +14,10 @@ App.controllers = {
       const page = this.getPage();
       if (page === 'cart') {
         this.createCheckout();
-      } else if (!page) {
-        this.createMain();
+      } else if (page === 'login') {
+        this.createLogin();
       } else {
-        console.log('ERROR');
+        this.createMain();
       }
       App.state.routeRendered = true;
     }, 100);
@@ -27,13 +27,14 @@ App.controllers = {
     history.pushState({ p }, '', App.state.routes[p]);
   },
   confirmPurchase() {
-    console.log('lests confirm', App.state.cart);
-    const res  = confirm('Are you sure?');
-    if (res) { 
+    console.log('lets confirm', App.state.cart);
+    const res = confirm('Are you sure?');
+    if (res) {
       App.state.cart = [];
       App.elements.header.cartCount.innerText = App.state.cart.length;
       this.go('home');
-      alert('Thank you for your purchase!'); }
+      alert('Thank you for your purchase!');
+    }
   },
   createProductsElements(container) {
     App.state.products.forEach((product) => {
@@ -44,13 +45,10 @@ App.controllers = {
         product.images,
         'Add to cart',
         () => {
-          console.log(product);
           const res = confirm('Do you want to add this product to your cart?');
-
-          this.dumpData();
-          console.log(res);
           if (res && App.state.mutation.addToCart(product)) {
             App.elements.header.cartCount.innerText = App.state.cart.length;
+            this.dumpData();
           }
         },
       );
@@ -71,26 +69,25 @@ App.controllers = {
 
           if (res) {
             App.state.mutation.removeFromCart(product);
-            this.dumpData();
             App.elements.header.cartCount.innerText = App.state.cart.length;
             App.controllers.createCheckout();
+            this.dumpData();
           }
         },
       );
       container.appendChild(card);
     });
   },
-
   createHeader() {
     const els = App.elements;
     const { header } = els;
 
     els.root.appendChild(header.container);
-    header.container.style.backgroundColor = 'rgba(102, 102, 102, 0.3)';
+    header.container.style.backgroundColor = '#000';
     header.container.style.display = 'flex';
     header.container.style.justifyContent = 'space-between';
     header.container.style.width = '100%';
-    header.container.style.position = 'fixed';
+    header.container.style.position = 'static';
     header.container.style.top = '0';
 
     header.container.appendChild(header.logo);
@@ -101,6 +98,10 @@ App.controllers = {
       App.controllers.go('home');
     };
 
+    header.container.appendChild(header.boxIcons);
+    header.boxIcons.appendChild(header.cartContainer);
+    header.cartContainer.appendChild(header.avatar);
+
     header.container.appendChild(header.cartIcon);
     header.cartIcon.src = './assets/cart.png';
     header.cartIcon.style.width = '36px';
@@ -110,18 +111,27 @@ App.controllers = {
     header.cartIcon.onclick = (e) => {
       App.controllers.go('cart');
     };
+
     header.cartCount.innerText = App.state.cart.length;
-    // header.cartCount.style.border = '1px solid orange';
     header.cartCount.style.color = '#FFF';
     header.cartCount.style.marginRight = '53px';
-
-    // header.cartContainer.style.border = '1px solid orange';
-    // header.cartContainer.style.width = '100px';
-    header.cartContainer.style.display = 'flex';
 
     header.cartContainer.appendChild(header.cartIcon);
     header.cartContainer.appendChild(header.cartCount);
     header.container.appendChild(header.cartContainer);
+    header.cartContainer.style.display = 'flex';
+    header.cartContainer.style.marginRight = '20px';
+
+    header.cartContainer.appendChild(header.avatar);
+    header.avatar.src = './assets/avatar.png';
+    header.avatar.style.paddingTop = '2px';
+    header.avatar.style.width = '36px';
+    header.avatar.style.height = '38px';
+    header.avatar.style.alignItems = 'center';
+    header.avatar.style.cursor = 'pointer';
+    header.avatar.onclick = (e) => {
+      App.controllers.go('login');
+    };
   },
 
   createMain() {
@@ -204,6 +214,92 @@ App.controllers = {
     confirmBtn.innerHTML = 'Confirm purchase';
     confirmBtnContainer.style.textAlign = 'center';
   },
+  createLogin() {
+    const els = App.elements;
+    const {
+      container, infoBox, header, title, email, keyCode, saveBtn, titleBtn,
+    } = els.main.login;
+
+    els.main.container.innerHTML = '';
+    els.main.container.appendChild(container);
+
+    container.style.background = '#CCC';
+    container.src = './assets/bakery.png';
+    container.style.width = '100%';
+    container.style.height = '100%';
+    container.style.paddingTop = '130px';
+    container.style.display = 'flex';
+    container.style.justifyContent = 'center';
+    container.style.marginBottom = '100px';
+
+    container.appendChild(infoBox);
+    infoBox.style.height = 'fit-content';
+    infoBox.style.width = '550px';
+    infoBox.style.display = 'flex';
+    infoBox.style.flexDirection = 'column';
+    infoBox.style.justifyContent = 'center';
+    infoBox.style.alignItems = 'center';
+    infoBox.style.background = 'white';
+
+    infoBox.appendChild(header);
+    header.style.height = '100px';
+    header.style.width = '550px';
+    header.style.background = '#000';
+    header.style.display = 'flex';
+    header.style.justifyContent = 'center';
+    header.style.alignItems = 'center';
+
+    header.appendChild(title);
+    title.innerHTML = 'Register at Bakery and start shopping';
+    title.style.color = '#fff';
+    title.style.fontSize = '24px';
+    title.style.fontStyle = 'normal';
+    title.style.fontWeight = '700';
+    title.style.lineHeight = '29px';
+
+    infoBox.appendChild(email);
+    email.placeholder = 'username';
+    email.style.marginTop = '30px';
+    email.style.height = '30px';
+    email.style.width = '350px';
+    email.style.marginBottom = '30px';
+    email.name = 'username';
+    const username = localStorage.setItem('username', email);
+    localStorage.getItem(username);
+
+    infoBox.appendChild(keyCode);
+    keyCode.placeholder = 'password';
+    keyCode.style.height = '30px';
+    keyCode.style.width = '350px';
+    keyCode.style.marginBottom = '30px';
+    keyCode.innerHTML = '';
+    keyCode.name = 'password';
+    const password = localStorage.setItem('password', keyCode);
+    localStorage.getItem(password);
+
+    infoBox.appendChild(saveBtn);
+    saveBtn.style.height = '50px';
+    saveBtn.style.width = '200px';
+    saveBtn.style.marginBottom = '50px';
+    saveBtn.style.background = '#000';
+    saveBtn.style.display = 'flex';
+    saveBtn.style.justifyContent = 'center';
+    saveBtn.style.alignItems = 'center';
+    saveBtn.onclick = (evt) => {
+      App.controllers.go('home');
+      console.log(evt);
+    };
+
+    saveBtn.appendChild(titleBtn);
+    titleBtn.innerHTML = 'save & go!';
+    titleBtn.style.color = '#fff';
+    titleBtn.style.fontSize = '22px';
+    titleBtn.style.fontStyle = 'normal';
+    titleBtn.style.fontWeight = '700';
+    titleBtn.style.lineHeight = '29px';
+    titleBtn.style.padding = '5px';
+    titleBtn.style.cursor = 'pointer';
+  },
 
   createFooter() {
     const els = App.elements;
@@ -215,7 +311,7 @@ App.controllers = {
     footer.container.style.display = 'flex';
     footer.container.style.justifyContent = 'center';
     footer.container.style.alignItems = 'center';
-    footer.container.style.padding = '50px';
+    footer.container.style.padding = '100px';
   },
 
   createLayout() {
@@ -226,6 +322,7 @@ App.controllers = {
     els.root.style.flexDirection = 'column';
 
     this.createHeader();
+    this.createLogin();
     // this.createMain();
     // this.createCheckout();
     els.root.appendChild(els.main.container);
@@ -238,7 +335,6 @@ App.controllers = {
     el.style.display = 'flex';
     el.style.border = 'none';
     el.style.height = '32px';
-    // el.style.width = '84px';
     el.style.left = '111px';
     el.style.top = '85px';
     el.style.borderRadius = '20px';
@@ -409,14 +505,14 @@ App.controllers = {
     }).format(value);
   },
   dumpData() {
-    const data = JSON.stringify(App.state.keys.cart)
-    console.log(data)
-    localStorage.setItem(App.state.keys.cart, data)
+    const data = JSON.stringify(App.state.cart);
+    console.log(data);
+    localStorage.setItem(App.state.keys.cart, data);
   },
   loadData() {
-    const data = localStorage.getItem(App.state.keys.cart)
+    const data = localStorage.getItem(App.state.keys.cart);
     if (data) {
-      App.state.mutation.setCart(JSON.parse(data))
+      App.state.mutation.setCart(JSON.parse(data));
     }
   },
 };
