@@ -515,16 +515,4 @@ App.controllers = {
       App.state.mutation.setCart(JSON.parse(data));
     }
   },
-  infoUser() {
-    const info = JSON.stringify(App.state.userData);
-    console.log(info);
-    localStorage.setItem(App.state.userData, info);
-  },
-  loadUser() {
-    const info = localStorage.getItem(App.state.userData);
-    if (info) {
-      App.state.mutation.setUser(JSON.parse(info));
-    }
-  },
-
 };
